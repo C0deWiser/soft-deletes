@@ -42,10 +42,18 @@ trait PassiveSoftDeletes
      *
      * @return bool
      */
+    public function notTrashed(): bool
+    {
+        return ! $this->trashed();
+    }
+
+    /**
+     * Determine if the model instance has not been soft-deleted.
+     *
+     * @return bool
+     */
     public function alive(): bool
     {
-        $deleted_at = $this->{$this->getDeletedAtColumn()};
-
-        return is_null($deleted_at) || $deleted_at > new \DateTime();
+        return $this->notTrashed();
     }
 }
