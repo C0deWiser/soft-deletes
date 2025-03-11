@@ -31,9 +31,10 @@ class PassiveSoftDeletingScope extends SoftDeletingScope
         $builder->macro('withoutTrashed', function (Builder $builder, \DateTimeInterface $at = null) {
             $model = $builder->getModel();
 
-            $builder
+            $builder->where(fn(Builder $builder) => $builder
                 ->whereNull($model->getQualifiedDeletedAtColumn())
-                ->orWhere($model->getQualifiedDeletedAtColumn(), '>', $at ?? new \DateTime());
+                ->orWhere($model->getQualifiedDeletedAtColumn(), '>', $at ?? new \DateTime())
+            );
 
             return $builder;
         });
